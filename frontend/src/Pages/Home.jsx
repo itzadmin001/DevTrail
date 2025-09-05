@@ -69,8 +69,14 @@ export default function Home() {
                                     </div>
                                 </div>
 
+
+
+
                                 <div className="absolute -right-6 -bottom-6 w-36 h-36 rounded-full bg-pink-400 opacity-30 filter blur-2xl"></div>
                                 <div className="absolute -left-6 -top-6 w-28 h-28 rounded-full bg-sky-400 opacity-20 filter blur-2xl"></div>
+                                <div>
+
+                                </div>
                             </div>
                         </div>
                     </div>

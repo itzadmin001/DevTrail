@@ -1,15 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaGithub } from 'react-icons/fa'
+import { MainContext } from '../ContextMain'
 
 export default function Login() {
     const navigate = useNavigate()
+    const { SetAuth } = useContext(MainContext)
+    const api = import.meta.env.VITE_API_BACKEND_URL || 'http://localhost:5000'
+
 
     function handleLogin(e) {
         e.preventDefault()
         // simulate login
         navigate('/dashboard')
     }
+
 
     return (
         <div>
@@ -45,7 +50,15 @@ export default function Login() {
                         </div>
                     </div>
 
-                    <button type="button" onClick={() => navigate("/auth/github")} className="w-full cursor-pointer hover:bg-pink-400 hover:text-black duration-300  flex items-center justify-center gap-2 py-2 border border-gray-600 rounded-md hover:shadow-sm bg-transparent text-gray-100 fade-up" style={{ animationDelay: '200ms' }}>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            // Start OAuth by full-page redirect to backend auth route
+                            window.location.href = `${api}/auth/github`;
+                            SetAuth(true)
+                        }}
+                        className="w-full cursor-pointer hover:bg-pink-400 hover:text-black duration-300  flex items-center justify-center gap-2 py-2 border border-gray-600 rounded-md hover:shadow-sm bg-transparent text-gray-100 fade-up"
+                        style={{ animationDelay: '200ms' }}>
                         <FaGithub className="text-xl text-pink-300" />
                         <span>Continue with GitHub</span>
                     </button>

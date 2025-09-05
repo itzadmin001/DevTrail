@@ -9,7 +9,14 @@ const UserSchema = new mongoose.Schema({
     bio: {
         type: String,
         default: ''
-    }
+    },
+    defaultPrivacy: {
+        type: String,
+        enum: ['public', 'private'],
+        default: 'public'
+    },
+}, {
+    timestamps: true
 });
 
 
