@@ -15,7 +15,22 @@ export default function Dashboard() {
     const [copied, setCopied] = useState(false)
     const navigate = useNavigate()
 
+    // Filter state for tags
+    const [filterTag, setFilterTag] = useState('All')
 
+    // derive tag list from user's markdowns
+    const allTags = React.useMemo(() => {
+        const setTags = new Set();
+        (markdowns || []).forEach(m => (m.tags || []).forEach(t => setTags.add(t)))
+        return ['All', ...Array.from(setTags)]
+    }, [markdowns])
+
+    // filtered markdowns based on selected tag
+    const filteredMarkdowns = React.useMemo(() => {
+        if (!markdowns) return []
+        if (filterTag === 'All') return markdowns
+        return markdowns.filter(m => (m.tags || []).includes(filterTag))
+    }, [markdowns, filterTag])
 
     useEffect(() => {
         fetchMarkDownsData()
@@ -99,19 +114,45 @@ export default function Dashboard() {
                             </div>
                         </div>
 
-                        <div>
-                            <h4 className="text-lg font-medium mb-2 text-white">Recent MarkDowns</h4>
-                            <div className="space-y-3">
-                                <article className="p-3 rounded-md border border-gray-700 hover:shadow">
-                                    <h5 className="font-semibold text-white">Getting started with DevTrail</h5>
-                                    <p className="text-sm text-gray-400">A quick guide to start publishing markdowns.</p>
-                                </article>
+                        <div className="mb-6">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                                <h4 className="text-lg font-medium text-white">Recent MarkDowns</h4>
+
+                                {/* dropdown for small screens */}
+                                <div className="flex items-center gap-2">
+                                    <label className="sr-only">Filter by tag</label>
+                                    <select
+                                        value={filterTag}
+                                        onChange={(e) => setFilterTag(e.target.value)}
+                                        className="block sm:hidden bg-gray-800 cursor-pointer text-gray-200 px-3 py-2 rounded-md border border-gray-700"
+                                    >
+                                        {allTags.map(t => <option key={t} value={t}>{t}</option>)}
+                                    </select>
+
+                                    {/* pill buttons for larger screens */}
+                                    <div className="hidden sm:flex flex-wrap gap-2">
+                                        {allTags.map(t => (
+                                            <button
+                                                key={t}
+                                                onClick={() => setFilterTag(t)}
+                                                className={`text-xs px-3 py-1 rounded-full cursor-pointer transition ${filterTag === t ? 'bg-pink-300 text-gray-900' : 'bg-gray-800/60 text-gray-200 hover:bg-gray-700'}`}
+                                            >
+                                                {t}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="mt-3 text-sm text-gray-400">
+                                Showing <span className="text-gray-200 font-medium">{filteredMarkdowns.length}</span> of <span className="text-gray-200 font-medium">{markdowns?.length || 0}</span> markdowns {filterTag !== 'All' && <>for tag "<span className="font-semibold text-white">{filterTag}</span>"</>}
                             </div>
                         </div>
+
                         <div className=' mt-5'>
                             <h1 className=' mb-5 text-2xl font-bold text-white'>MarksDown</h1>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
-                                {markdowns?.map((markdown, i) => {
+                                {filteredMarkdowns.map((markdown, i) => {
                                     const key = markdown._id || i
 
                                     return (
