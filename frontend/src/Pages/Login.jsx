@@ -26,6 +26,7 @@ export default function Login() {
                 <header className="mb-6 text-center fade-up">
                     <h1 className="text-2xl font-semibold text-pink-300">Welcome back</h1>
                     <p className="text-sm text-gray-300">Sign in to continue to DevTrail</p>
+                    <span className="text-sm text-red-400">Login with GitHub only </span>
                 </header>
 
                 <form onSubmit={handleLogin} className="space-y-4">

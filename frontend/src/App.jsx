@@ -5,6 +5,9 @@ import Footer from './Components/Footer'
 import Login from './Pages/Login'
 import Dashboard from './Pages/Dashboard'
 import Home from './Pages/Home'
+import Profile from './Pages/Profile'
+import ViewMarkDown from './Components/ViewMarkDown'
+import Userprofile from './Pages/Userprofile'
 
 function App() {
   return (
@@ -16,6 +19,10 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/profile" element={<Profile />} />
+            <Route path="/dashboard/view/:id" element={<ViewMarkDown />} />
+            {/* explicit token param so shared link loads UI */}
+            <Route path="/markdowns/shared/:token" element={<Userprofile />} />
           </Routes>
         </main>
         <Footer />

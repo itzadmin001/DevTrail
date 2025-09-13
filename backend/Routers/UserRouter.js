@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 const { passport, generateToken } = require('../Service/GithubAuth');
@@ -31,5 +31,13 @@ router.get('/profile', (req, res, next) => {
         return res.status(401).json({ error: 'Invalid token' });
     }
 }, userController.getProfile);
+
+// public profile (no auth)
+router.get("/public/:id", userController.GetPublicProfile);
+
+router.get('/logout', (req, res) => {
+    res.clearCookie('token');
+    res.status(200).json({ message: 'Logged out successfully' });
+});
 
 module.exports = router;

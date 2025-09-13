@@ -4,7 +4,7 @@ import axios from "axios";
 import { MainContext } from "../ContextMain";
 
 function MarkDown() {
-    const { BackendBaseUrl, user, markdowns, setMarkDowns } = useContext(MainContext)
+    const { BackendBaseUrl, user, markdowns, fetchMarkDownsData, setMarkDowns } = useContext(MainContext)
     const [title, setTitle] = useState("");
     const [tagInput, setTagInput] = useState("");
     const [tags, setTags] = useState([]);
@@ -39,15 +39,20 @@ function MarkDown() {
             return;
         }
 
-        axios.post(BackendBaseUrl + "/markdown/create", formData,
+        axios.post(BackendBaseUrl + "/markdowns/create", formData,
             {
                 withCredentials: true
             }
         ).then((success) => {
             console.log(success)
+            fetchMarkDownsData()
         }).catch((err) => {
             console.log(err)
         })
+        setTitle("");
+        setTags([]);
+        setContent("");
+
     };
 
     return (
